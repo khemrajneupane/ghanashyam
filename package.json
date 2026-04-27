@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "quiz:seed:build": "node scripts/build-nepal-quiz-seed.cjs",
+    "quiz:seed:validate": "node scripts/validate-nepal-quiz-seed.cjs"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
