@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 
-import quizSeed from "@/data/nepalQuizSeed.json";
+import quizSeed from "@/data/nepalQuizSeed.ne.json";
 
 type Difficulty = "easy" | "medium" | "hard";
 
@@ -77,235 +77,7 @@ const DIFFICULTY_STYLE: Record<
   },
 };
 
-const CATEGORY_NAME_NEPALI: Record<string, string> = {
-  "nepal-general-knowledge": "नेपाल सामान्य ज्ञान",
-  "nepal-history": "नेपालको इतिहास",
-  "nepal-geography": "नेपालको भूगोल",
-  "nepal-politics-government": "नेपाल राजनीति र सरकार",
-  "nepal-economy": "नेपालको अर्थतन्त्र",
-  "nepal-religion-culture": "नेपाल धर्म र संस्कृति",
-  "nepal-festivals": "नेपालका चाडपर्व",
-  "nepal-languages-ethnic-groups": "नेपालका भाषा र जातीय समूह",
-  "nepal-tourism-heritage": "नेपाल पर्यटन र सम्पदा",
-  "nepal-mountains-nature": "नेपाल हिमाल र प्रकृति",
-  "nepal-sports": "नेपाल खेलकुद",
-  "nepal-education-universities": "नेपाल शिक्षा र विश्वविद्यालय",
-  "nepal-current-affairs": "नेपाल समसामयिक",
-  "nepal-constitution-law": "नेपाल संविधान र कानून",
-  "famous-nepali-personalities": "प्रसिद्ध नेपाली व्यक्तित्व",
-};
-
-const ENGLISH_WORD_TO_NEPALI: Record<string, string> = {
-  what: "के",
-  which: "कुन",
-  who: "को",
-  whom: "को",
-  when: "कहिले",
-  where: "कहाँ",
-  why: "किन",
-  how: "कसरी",
-  many: "धेरै",
-  much: "धेरै",
-  is: "हो",
-  are: "छन्",
-  was: "थियो",
-  were: "थिए",
-  be: "हुनु",
-  in: "मा",
-  on: "मा",
-  at: "मा",
-  to: "लाई",
-  of: "को",
-  from: "बाट",
-  by: "द्वारा",
-  with: "सहित",
-  and: "र",
-  or: "वा",
-  for: "लागि",
-  after: "पछि",
-  before: "अघि",
-  under: "अन्तर्गत",
-  over: "माथि",
-  through: "मार्फत",
-  into: "भित्र",
-  between: "बीच",
-  largest: "सबैभन्दा ठूलो",
-  smallest: "सबैभन्दा सानो",
-  highest: "सबैभन्दा अग्लो",
-  lowest: "सबैभन्दा होचो",
-  official: "आधिकारिक",
-  international: "अन्तर्राष्ट्रिय",
-  national: "राष्ट्रिय",
-  federal: "संघीय",
-  democratic: "लोकतान्त्रिक",
-  republic: "गणतन्त्र",
-  government: "सरकार",
-  language: "भाषा",
-  religion: "धर्म",
-  culture: "संस्कृति",
-  economy: "अर्थतन्त्र",
-  politics: "राजनीति",
-  history: "इतिहास",
-  geography: "भूगोल",
-  university: "विश्वविद्यालय",
-  education: "शिक्षा",
-  constitution: "संविधान",
-  law: "कानून",
-  tourism: "पर्यटन",
-  heritage: "सम्पदा",
-  mountain: "हिमाल",
-  nature: "प्रकृति",
-  sports: "खेलकुद",
-  current: "हालको",
-  affairs: "समसामयिक",
-  famous: "प्रसिद्ध",
-  personalities: "व्यक्तित्व",
-  category: "श्रेणी",
-  categories: "श्रेणीहरू",
-  question: "प्रश्न",
-  questions: "प्रश्नहरू",
-  answer: "उत्तर",
-  correct: "सही",
-  easy: "सजिलो",
-  medium: "मध्यम",
-  hard: "गाह्रो",
-  yes: "हो",
-  no: "होइन",
-  year: "वर्ष",
-  date: "मिति",
-  day: "दिन",
-  week: "हप्ता",
-  city: "सहर",
-  district: "जिल्ला",
-  province: "प्रदेश",
-  river: "नदी",
-  lake: "ताल",
-  temple: "मन्दिर",
-  festival: "चाडपर्व",
-  election: "निर्वाचन",
-  parliament: "संसद",
-  president: "राष्ट्रपति",
-  prime: "प्रधान",
-  minister: "मन्त्री",
-  king: "राजा",
-  queen: "रानी",
-  people: "जनता",
-  state: "राज्य",
-  court: "अदालत",
-  rights: "अधिकार",
-  legal: "कानुनी",
-  local: "स्थानीय",
-  level: "तह",
-  term: "अवधि",
-  first: "पहिलो",
-  second: "दोस्रो",
-  third: "तेस्रो",
-  fourth: "चौथो",
-  fifth: "पाँचौं",
-  sixth: "छैटौं",
-  seventh: "सातौं",
-  eighth: "आठौं",
-  ninth: "नवौं",
-  tenth: "दशौं",
-  world: "विश्व",
-  about: "बारे",
-  approximately: "करिब",
-  approximatelys: "करिब",
-  approximatelyly: "करिब",
-  because: "किनभने",
-};
-
-const PHRASE_TO_NEPALI: Array<[RegExp, string]> = [
-  [/\bWhat is\b/gi, "के हो"],
-  [/\bWhich is\b/gi, "कुन हो"],
-  [/\bWhich\b/gi, "कुन"],
-  [/\bWho is\b/gi, "को हुनुहुन्छ"],
-  [/\bWho\b/gi, "को"],
-  [/\bWhen was\b/gi, "कहिले"],
-  [/\bWhen\b/gi, "कहिले"],
-  [/\bWhere is\b/gi, "कहाँ छ"],
-  [/\bWhere\b/gi, "कहाँ"],
-  [/\bHow many\b/gi, "कति"],
-  [/\bHow much\b/gi, "कति"],
-  [/\bHow\b/gi, "कसरी"],
-  [/\bIn which year\b/gi, "कुन वर्षमा"],
-  [/\bIn which\b/gi, "कुनमा"],
-  [/\bOn which date\b/gi, "कुन मितिमा"],
-  [/\bAt what age\b/gi, "कुन उमेरमा"],
-  [/\bCorrect Answer\b/gi, "सही उत्तर"],
-  [/\bNepal\b/gi, "नेपाल"],
-  [/\bMount Everest\b/gi, "सगरमाथा"],
-  [/\bKathmandu\b/gi, "काठमाडौँ"],
-  [/\bPokhara\b/gi, "पोखरा"],
-  [/\bLumbini\b/gi, "लुम्बिनी"],
-  [/\bBagmati\b/gi, "बागमती"],
-  [/\bKoshi\b/gi, "कोशी"],
-  [/\bKarnali\b/gi, "कर्णाली"],
-  [/\bSagarmatha\b/gi, "सगरमाथा"],
-  [/\bRara\b/gi, "रारा"],
-];
-
-const LATIN_TO_DEVANAGARI: Record<string, string> = {
-  a: "अ",
-  b: "ब",
-  c: "क",
-  d: "ड",
-  e: "ए",
-  f: "फ",
-  g: "ग",
-  h: "ह",
-  i: "इ",
-  j: "ज",
-  k: "क",
-  l: "ल",
-  m: "म",
-  n: "न",
-  o: "ओ",
-  p: "प",
-  q: "क",
-  r: "र",
-  s: "स",
-  t: "ट",
-  u: "उ",
-  v: "भ",
-  w: "व",
-  x: "क्स",
-  y: "य",
-  z: "ज",
-};
-
 const OPTION_LABELS = ["क", "ख", "ग", "घ"];
-
-function transliterateLatinWord(word: string): string {
-  if (word.length <= 1) return word;
-
-  return word
-    .split("")
-    .map((char) => {
-      const lower = char.toLowerCase();
-      return LATIN_TO_DEVANAGARI[lower] ?? char;
-    })
-    .join("");
-}
-
-function localizeSeedText(value: string): string {
-  let output = value;
-
-  for (const [pattern, replacement] of PHRASE_TO_NEPALI) {
-    output = output.replace(pattern, replacement);
-  }
-
-  output = output.replace(/\b[A-Za-z][A-Za-z0-9.'+-]*\b/g, (word) => {
-    const lookup = ENGLISH_WORD_TO_NEPALI[word.toLowerCase()];
-    if (lookup) return lookup;
-    return transliterateLatinWord(word);
-  });
-
-  return output
-    .replace(/\s{2,}/g, " ")
-    .replace(/\s+([?!.,:;])/g, "$1")
-    .trim();
-}
 
 function shuffle<T>(items: T[]): T[] {
   const clone = [...items];
@@ -572,7 +344,7 @@ export default function Quiz() {
                       minHeight: "46px",
                     }}
                   >
-                    {CATEGORY_NAME_NEPALI[category.id] ?? localizeSeedText(category.name)}
+                    {category.name}
                   </h3>
 
                   <div
@@ -669,10 +441,7 @@ export default function Quiz() {
           </h2>
 
           <p style={{ margin: "8px 0 0", color: "#5C3D2E", fontSize: "15px" }}>
-            {currentCategory
-              ? CATEGORY_NAME_NEPALI[currentCategory.id] ??
-                localizeSeedText(currentCategory.name)
-              : ""}
+            {currentCategory?.name}
           </p>
 
           <div
@@ -785,8 +554,7 @@ export default function Quiz() {
         }}
       >
         <h1 style={{ color: "#FBF4DC", fontWeight: 700, marginBottom: "6px" }}>
-          {CATEGORY_NAME_NEPALI[currentCategory.id] ??
-            localizeSeedText(currentCategory.name)}
+          {currentCategory.name}
         </h1>
         <button
           onClick={backToCategories}
@@ -940,7 +708,7 @@ export default function Quiz() {
                   margin: 0,
                 }}
               >
-                {localizeSeedText(currentQuestion.question)}
+                {currentQuestion.question}
               </p>
             </div>
 
@@ -1000,9 +768,9 @@ export default function Quiz() {
                         flexShrink: 0,
                       }}
                     >
-                    {OPTION_LABELS[optionIndex] ?? `${optionIndex + 1}`}
+                      {OPTION_LABELS[optionIndex] ?? `${optionIndex + 1}`}
                     </span>
-                    {localizeSeedText(option)}
+                    {option}
                   </button>
                 );
               })}
@@ -1026,10 +794,10 @@ export default function Quiz() {
               }}
             >
               <p style={{ margin: 0, color: "#2C1810", fontWeight: 700 }}>
-                सही उत्तर: {localizeSeedText(currentQuestion.correctAnswer)}
+                सही उत्तर: {currentQuestion.correctAnswer}
               </p>
               <p style={{ margin: "8px 0 0", color: "#5C3D2E", lineHeight: 1.5 }}>
-                {localizeSeedText(currentQuestion.explanation)}
+                {currentQuestion.explanation}
               </p>
             </div>
 

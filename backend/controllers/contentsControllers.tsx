@@ -4,12 +4,14 @@ import dbConnect from "../config/dbConnect";
 import Contents from "../models/contents";
 import { getToken } from "next-auth/jwt";
 
+const authSecret = process.env.NEXTAUTH_SECRET;
+
 // Upload content
 export const uploadContents = catchAsyncErrors(async (req: NextRequest) => {
   await dbConnect();
   const body = await req.json();
   const { title, description } = body;
-  const session = await getToken({ req });
+  const session = await getToken({ req, secret: authSecret });
   const content = await Contents.create({
     title,
     description,
@@ -46,7 +48,7 @@ export const getAContentById = catchAsyncErrors(
 // Delete a content
 export const deleteContent = catchAsyncErrors(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
-    const session = await getToken({ req });
+    const session = await getToken({ req, secret: authSecret });
     try {
       await dbConnect();
       const contents = await Contents.findById(params.id);
@@ -75,7 +77,7 @@ export const deleteContent = catchAsyncErrors(
 // Update a content
 export const updateContent = catchAsyncErrors(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
-    const session = await getToken({ req });
+    const session = await getToken({ req, secret: authSecret });
     try {
       await dbConnect();
       const contents = await Contents.findById(params.id);

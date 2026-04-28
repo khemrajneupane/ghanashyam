@@ -1,11 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 
-const filePath = path.join(__dirname, "..", "data", "nepalQuizSeed.json");
+const fileName = process.argv[2] || "nepalQuizSeed.ne.json";
+const filePath = path.join(__dirname, "..", "data", fileName);
 const raw = fs.readFileSync(filePath, "utf8");
 const data = JSON.parse(raw);
 
 const errors = [];
+const enforceNoLatin = fileName.includes(".ne.");
 
 if (!Array.isArray(data.categories) || data.categories.length !== 15) {
   errors.push(`Expected 15 categories, got ${data.categories?.length ?? "invalid"}`);
@@ -63,6 +65,19 @@ for (const q of data.questions || []) {
     }
   }
 
+  if (enforceNoLatin) {
+    const visibleText = [
+      q.category,
+      q.question,
+      ...(q.options || []),
+      q.correctAnswer,
+      q.explanation,
+    ].join(" ");
+    if (/[A-Za-z]/.test(visibleText)) {
+      errors.push(`Question ${q.id} contains Latin text in user-facing fields`);
+    }
+  }
+
   if (!allowedDifficulty.has(q.difficulty)) {
     errors.push(`Question ${q.id} has invalid difficulty: ${q.difficulty}`);
   }
@@ -86,6 +101,10 @@ for (const category of data.categories || []) {
   const list = byCategory.get(category.id) || [];
   if (list.length < 20) {
     errors.push(`Category ${category.id} has ${list.length} questions; expected at least 20`);
+  }
+
+  if (enforceNoLatin && /[A-Za-z]/.test(String(category.name || ""))) {
+    errors.push(`Category ${category.id} contains Latin text in name`);
   }
 
   const diffCount = list.reduce(

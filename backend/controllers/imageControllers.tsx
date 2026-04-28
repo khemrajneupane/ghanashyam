@@ -5,9 +5,11 @@ import dbConnect from "../config/dbConnect";
 import { getToken } from "next-auth/jwt";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 
+const authSecret = process.env.NEXTAUTH_SECRET;
+
 // Upload image
 export const uploadImageToCloudinary = async (req: NextRequest) => {
-  const session = await getToken({ req });
+  const session = await getToken({ req, secret: authSecret });
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
@@ -51,7 +53,7 @@ export const getAllImages = async () => {
 // Delete image
 export const deleteImage = catchAsyncErrors(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
-    const session = await getToken({ req });
+    const session = await getToken({ req, secret: authSecret });
     try {
       await dbConnect();
       const image = await Image.findById(params.id);

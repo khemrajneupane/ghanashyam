@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "quiz:seed:build": "node scripts/build-nepal-quiz-seed.cjs",
-    "quiz:seed:validate": "node scripts/validate-nepal-quiz-seed.cjs"
+    "quiz:seed:validate": "node scripts/validate-nepal-quiz-seed.cjs",
+    "quiz:seed:build:ne": "node scripts/build-nepal-quiz-ne-seed.cjs",
+    "quiz:seed:validate:en": "node scripts/validate-nepal-quiz-seed.cjs nepalQuizSeed.json"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",

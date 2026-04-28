@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+data/.ne-translation-cache.json
 
 # debug
 npm-debug.log*

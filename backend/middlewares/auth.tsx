@@ -7,12 +7,14 @@ interface AuthenticatedRequest extends NextRequest {
   user?: IUser;
 }
 
+const authSecret = process.env.NEXTAUTH_SECRET;
+
 export const isAuthenticatedUser = async (
   req: AuthenticatedRequest,
   event: any,
   next: any
 ) => {
-  const session = await getToken({ req });
+  const session = await getToken({ req, secret: authSecret });
 
   if (!session) {
     return NextResponse.json(
